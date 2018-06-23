@@ -1,0 +1,60 @@
+CREATE DATABASE cr10_ahmad_al_mardene_biglibrary DEFAULT CHARACTER SET utf8;
+
+
+CREATE TABLE IF NOT EXISTS `user` (
+ `userId` int(11) NOT NULL AUTO_INCREMENT,
+ `userName` varchar(30) NOT NULL,
+ `userEmail` varchar(60) NOT NULL,
+ `userPass` varchar(255) NOT NULL,
+ PRIMARY KEY (`userId`),
+ UNIQUE KEY `userEmail` (`userEmail`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `auther` (
+ `autherId` int(11) NOT NULL AUTO_INCREMENT,
+ `autherName` varchar(30) NOT NULL,
+ `autherSurname` varchar(30) NOT NULL,
+ `fk_mediaId` INT (11) NOT NULL,
+ PRIMARY KEY (`autherId`),
+ UNIQUE KEY `autherSurname` (`autherSurname`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1
+
+
+
+CREATE TABLE IF NOT EXISTS `publisher` (
+ `publisherId` int(11) NOT NULL AUTO_INCREMENT,
+ `publisherName` varchar(55) NOT NULL,
+ `address` varchar(255) NOT NULL,
+ `size` VARCHAR (11),
+ `fk_mediaId` INT (11) NOT NULL,
+ PRIMARY KEY (`publisherId`),
+ UNIQUE KEY `publisherName` (`publisherName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1
+
+
+CREATE TABLE IF NOT EXISTS `media` (
+ `mediaId` int(11) NOT NULL AUTO_INCREMENT,
+ `title` varchar(55) NOT NULL,
+ `image` blob,
+ `auther` varchar(55) NOT NULL,
+ `ISBN` INT (11) ,
+ `publisher` VARCHAR (55) NOT NULL,
+ `publishDate` DATE, 
+ `type` VARCHAR(55) NOT NULL,
+ `discription` CHARACTER,
+ `fk_autherId` INT (11) NOT NULL,
+ `fk_publisherId` INT (11) NOT NULL,
+ `fk_userId` INT (11) NOT NULL,
+ PRIMARY KEY (`mediaId`),
+ UNIQUE KEY `title` (`title`),
+ FOREIGN KEY (fk_autherId) REFERENCES auther (autherId),
+ FOREIGN KEY (fk_publisherId) REFERENCES publisher (publisherId),
+ FOREIGN KEY (fk_userId) REFERENCES user (userId))
+ ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1
+
+
+ALTER TABLE publisher ADD FOREIGN KEY (fk_mediaId) REFERENCES media (mediaId);
+
+
+ALTER TABLE auther ADD FOREIGN KEY (fk_mediaId) REFERENCES media (mediaId);
